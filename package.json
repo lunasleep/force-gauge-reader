@@ -1,0 +1,18 @@
+{
+  "name": "@eight/force-gauge-reader",
+  "version": "1.0.0",
+  "description": "Read data from a Mark-10 Series 3 Force Gauge",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": ["/build"],
+  "scripts": {
+    "build": "tsc --pretty",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.8.2"
+  }
+}
