@@ -1,0 +1,39 @@
+version: '1.0'
+steps:
+  main_clone:
+    title: Cloning main repository...
+    type: git-clone
+    repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
+    revision: '${{CF_REVISION}}'
+  get_git_token:
+    title: Reading Github token
+    image: codefresh/cli
+    commands:
+      - cf_export GITHUB_TOKEN=$(codefresh get context lunasleep --decrypt -o yaml | yq -y .spec.data.auth.password)
+      - cf_export GITHUB_USER=${{CF_COMMIT_AUTHOR}}
+  github_tag:
+    title: "Generating Github tag for new versions"
+    type: freestyle
+    image: alpine/git
+    commands:
+      - git config user.name ${{GITHUB_TOKEN}}
+      - git config user.email ${{GITHUB_USER}}
+      - git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+      - if [ -z $(git tag -l "${{PACKAGE_VERSION}}") ]; then git tag "${{PACKAGE_VERSION}}" && git push origin "${{PACKAGE_VERSION}}"; fi
+    when:
+      branch:
+        only:
+          - staging
+  publish:
+    title: Publishing module
+    image: eightsleep/node
+    git: lunasleep
+    commands:
+      - npm install -g npm@latest
+      - npm install
+      - npm run build
+      - npm publish
+    when:
+      branch:
+        only:
+          - main
