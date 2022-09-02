@@ -4,15 +4,25 @@
   "description": "Read data from a Mark-10 Series 3 Force Gauge",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "files": ["/build"],
+  "files": [
+    "/build"
+  ],
   "scripts": {
     "build": "tsc --pretty",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run build && node ./build/test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^14.14.31",
     "typescript": "^4.8.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lunasleep/force-gauge-reader.git"
+  },
+  "dependencies": {
+    "serialport": "^10.4.0"
   }
 }
